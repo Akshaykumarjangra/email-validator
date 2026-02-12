@@ -1,0 +1,23 @@
+# Environment variables (SaaS Secrets)
+.env
+.env.example
+
+# Databases
+*.db
+results.db
+saas_results.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RocketVerify | Premium Email Validation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="top-bar">
+                <h1>Rocket<span>Verify</span></h1>
+                <div class="user-profile">
+                    {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <span class="user-name">{{ user.name }}</span>
+                        {% if user.role == 'admin' %}
+                        <a href="/admin" class="badge admin-badge">Admin Panel</a>
+                        {% endif %}
+                        <a href="/auth/logout" class="logout-link">Logout</a>
+                    </div>
+                    <img src="{{ user.picture }}" alt="Profile" class="avatar">
+                    {% else %}
+                    <a href="/auth/login" class="btn btn-google">
+                        <img src="https://www.google.com/favicon.ico" alt="Google"> Login with Google
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <p>High-volume validation with deep SMTP intelligence.</p>
+        </header>
+
+        {% if user.is_authenticated %}
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="label">Usage Limits</span>
+                <span class="value">{{ user.credits_used }} / {{ user.credits_total }}</span>
+                <div class="progress-bg">
+                    {% set progress = (user.credits_used / user.credits_total * 100) if user.credits_total > 0 else 0 %}
+                    <div class="progress-fill" style="width: {{ progress }}%"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <span class="label">User Tier</span>
+                <span class="value">{{ user.role | capitalize }}</span>
+            </div>
+            <div class="metric-card">
+                <span class="label">Batch Cap</span>
+                <span class="value">1,000 / Request</span>
+            </div>
+        </div>
+
+        <main>
+            <section class="paster-section card">
+                <h3>Paste Emails</h3>
+                <textarea id="emailInput"
+                    placeholder="Enter emails separated by commas, newlines, or spaces..."></textarea>
+                <div class="actions">
+                    <button id="verifyBtn" class="btn btn-primary">Start Verification 🚀</button>
+                    <button id="clearBtn" class="btn btn-outline">Clear</button>
+                </div>
+            </section>
+
+            <section id="resultsSection" class="results-section card hidden">
+                <div class="results-header">
+                    <h3>Verification Results</h3>
+                    <div class="stats-pills">
+                        <div class="pill valid">Valid: <span id="countValid">0</span></div>
+                        <div class="pill risky">Risky: <span id="countRisky">0</span></div>
+                        <div class="pill invalid">Invalid: <span id="countInvalid">0</span></div>
+                    </div>
+                    <button id="exportBtn" class="btn btn-secondary">Download CSV (.csv)</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        {% else %}
+        <div class="hero-section card">
+            <h2>Professional Email Verification SaaS</h2>
+            <p>Verify up to 4,000 emails for free. Deep SMTP checks, disposable domain detection, and real-time
+                dashboard.</p>
+            <a href="/auth/login" class="btn btn-primary btn-large">Get Started Now 🚀</a>
+        </div>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2026 RocketVerify Engine. Global SaaS Validation System.</p>
+        </footer>
+    </div>
+
+    <div id="loader" class="loader-overlay hidden">
+        <div class="loader"></div>
+        <p id="loaderText">Verifying Mailboxes...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | RocketVerify</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container admin-container">
+        <header>
+            <div class="top-bar">
+                <h1>Admin<span>Console</span></h1>
+                <a href="/" class="btn btn-outline">Back to Dashboard</a>
+            </div>
+            <p>Global System Monitoring & Logs</p>
+        </header>
+
+        <section class="card">
+            <h3>System Status</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="label">Total Verifications</span>
+                    <span class="value">{{ logs | length }}+</span>
+                </div>
+                <div class="metric-card">
+                    <span class="label">System Health</span>
+                    <span class="value status-valid">Operational</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Global Logs</h3>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Target Email</th>
+                            <th>Status</th>
+                            <th>Comment</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log[0] }}</td>
+                            <td>{{ log[1] }}</td>
+                            <td class="status-{{ log[2] | lower }}">{{ log[2] }}</td>
+                            <td class="dim-text">{{ log[3] }}</td>
+                            <td class="dim-text">{{ log[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
